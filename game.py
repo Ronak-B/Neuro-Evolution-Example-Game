@@ -25,7 +25,7 @@ class Level():
 class Blob():
     def __init__(self):
         self.x=30
-        self.y=450
+        self.y=350
         self.passed=0      
         self.last_passed=0
         self.prev_dir=1
@@ -103,7 +103,7 @@ def eval_genomes(genomes,config):
                 game_over=True #id all obstacles passed then game_over=True
 
             #get output from the neural network which decides where to move the blob
-            output=nets[blobs.index(blob)].activate(((blob.y-window_bottom),(blob.y-window_top),blob.y,blob.x))
+            output=nets[blobs.index(blob)].activate(((blob.y-window_bottom),(blob.y-window_top),abs(blob.x-level.blocks[passed]) if passed <4 else 0))
 
             #decide the output and move the blob accordingly
             m=max(output)
@@ -150,14 +150,14 @@ def eval_genomes(genomes,config):
             for blob in blobs:
                 if r.colliderect(pygame.rect.Rect(blob.x,blob.y,20,20)):
                     #remove blob and decrease fitness
-                    ge[blobs.index(blob)].fitness-=40
+                    ge[blobs.index(blob)].fitness-=50
                     nets.pop(blobs.index(blob))
                     ge.pop(blobs.index(blob))
                     blobs.pop(blobs.index(blob))
 
                 if blob.x<10 or blob.y<10 or blob.y>770:
                     #remove blob and decrease fitness
-                    ge[blobs.index(blob)].fitness-=40
+                    ge[blobs.index(blob)].fitness-=50
                     nets.pop(blobs.index(blob))
                     ge.pop(blobs.index(blob))
                     blobs.pop(blobs.index(blob))
